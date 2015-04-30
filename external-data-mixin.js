@@ -1,4 +1,4 @@
-
+/*! externalDataMixin | https://github.com/vflash/externalDataMixin */
 
 var externalDataMixin = {
     //getExternalData: null, // function(nextProps, nextState) {return []};
@@ -91,15 +91,40 @@ var externalDataMixin = {
     },
 };
 
+
+var const_ReactDOMTextarea = React.DOM.textarea.componentConstructor;
+var const_ReactDOMSelect = React.DOM.select.componentConstructor;
+var const_ReactDOMButton = React.DOM.button.componentConstructor;
+var const_ReactDOMInput = React.DOM.input.componentConstructor;
+var const_ReactDOMForm = React.DOM.form.componentConstructor;
+var const_ReactDOMImg = React.DOM.img.componentConstructor;
+
 function tailExData(self) {
     var refs = self.refs;
 
     for (var i in refs) {
-        if (refs[i]._checkExternalData) {
-            refs[i]._checkExternalData();
-        } else
-        if (refs[i].setState) {
-            refs[i].setState({});
+        var elem = refs[i];
+
+        if (elem._checkExternalData) {
+            elem._checkExternalData();
+
+        } else if (elem.setState) {
+            switch(elem.constructor) {
+                case const_ReactDOMTextarea:
+                case const_ReactDOMSelect:
+                case const_ReactDOMButton:
+                case const_ReactDOMInput:
+                case const_ReactDOMForm:
+                case const_ReactDOMImg:
+                    continue;
+            };
+
+            elem.setState({});
         };
     };
 };
+
+if (typeof exports === 'object' && typeof module !== 'undefined') {
+    module.exports = externalDataMixin;
+};
+
