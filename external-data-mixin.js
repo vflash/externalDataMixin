@@ -92,13 +92,6 @@ var externalDataMixin = {
 };
 
 
-var const_ReactDOMTextarea = React.DOM.textarea.componentConstructor;
-var const_ReactDOMSelect = React.DOM.select.componentConstructor;
-var const_ReactDOMButton = React.DOM.button.componentConstructor;
-var const_ReactDOMInput = React.DOM.input.componentConstructor;
-var const_ReactDOMForm = React.DOM.form.componentConstructor;
-var const_ReactDOMImg = React.DOM.img.componentConstructor;
-
 function tailExData(self) {
     var refs = self.refs;
 
@@ -108,17 +101,9 @@ function tailExData(self) {
         if (elem._checkExternalData) {
             elem._checkExternalData();
 
+        } else if (elem.tagName) {
+            continue;
         } else if (elem.setState) {
-            switch(elem.constructor) {
-                case const_ReactDOMTextarea:
-                case const_ReactDOMSelect:
-                case const_ReactDOMButton:
-                case const_ReactDOMInput:
-                case const_ReactDOMForm:
-                case const_ReactDOMImg:
-                    continue;
-            };
-
             elem.setState({});
         };
     };
