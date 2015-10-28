@@ -57,7 +57,14 @@ var externalDataMixin = {
         };
 
         if (nextData) {
-            for(var j = nextData.length; j--;) {
+            var j = nextData.length;
+
+            if (j !== exData.length) {
+                this._externalData = nextData;
+                return true;
+            };
+
+            while(j--) {
                 if (exData[j] !== nextData[j]) {
                     this._externalData = nextData;
                     return true;
@@ -77,9 +84,15 @@ var externalDataMixin = {
 
         var nextData = this.getExternalData(this.props, this.state);
         var exData = this._externalData;
-        var change;
+        var j = nextData.length;
 
-        for(var j = nextData.length; j--;) {
+        if (j !== exData.length) {
+            this._externalData = nextData;
+            this.forceUpdate();
+            return;
+        };
+
+        while(j--) {
             if (exData[j] !== nextData[j]) {
                 this._externalData = nextData;
                 this.forceUpdate();
